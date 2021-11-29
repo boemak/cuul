@@ -23,6 +23,7 @@ namespace cuul
         //The command parser
         public Parser parser;
 
+       
 
 
         static void Main(string[] args)
@@ -55,11 +56,13 @@ namespace cuul
             var hall = new Room("The main hall", "It is quite the hall, I wish I had one like this.");
             var library = new Room("The Library");
             var smokeroom = new Room("The smoke room");
+            var classroom = new Room("The classroom", "It sure is a classroom");
+
 
             start.SetExit(Direction.North, hall);
             hall.SetExit(Direction.East, smokeroom);
             smokeroom.SetExit(Direction.West, hall);
-
+            hall.SetExit(Direction.North, classroom);
             hall.SetExit(Direction.West, library);
             library.SetExit(Direction.East,hall);
             //Push our starting room on the stack.
@@ -71,8 +74,7 @@ namespace cuul
 
         private void SetCurrentRoom(Room room)
         {
-            Console.WriteLine("You are in: {0}", room.Description);
-            
+            Console.WriteLine("You are in: {0}", room.Description);           
             CurrentRoom = room;
         }
         

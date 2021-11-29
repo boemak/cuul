@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace cuul
 {
-
     public class Room
     {
         public string Description { get; set; }
@@ -16,6 +15,8 @@ namespace cuul
         {
             Description = description;
             _exits = new Dictionary<Direction, Room>();
+            
+            
         }
         //Constructor takes two arguments
         public Room(string description, string longDescription)
