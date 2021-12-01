@@ -29,16 +29,23 @@ namespace cuul
 
         public Tuple<bool,Command> CreateCommand(string[] words)
         {
-            var first = words[0];
-            string secondWord = "";
-            if(words.Length > 1)
+            if (words.Length != 0)
             {
-                secondWord = words[1];
-            }
+                var first = words[0];
+                string secondWord = "";
+                if (words.Length > 1)
+                {
+                    secondWord = words[1];
+                }
 
-            if(_commands.Contains(first))
-            {
-                return new Tuple<bool, Command>(true, new Command() { FirstWord = first, SecondWord = secondWord});
+                if (_commands.Contains(first))
+                {
+                    return new Tuple<bool, Command>(true, new Command() { FirstWord = first, SecondWord = secondWord });
+                }
+                else
+                {
+                    return new Tuple<bool, Command>(false, null);
+                }
             }
             else
             {

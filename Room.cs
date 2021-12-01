@@ -3,34 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace cuul
 {
+    
     public class Room
     {
         public string Description { get; set; }
         public string LongDescription { get; set; }
-        private Dictionary<Direction, Room> _exits;
+
+        [JsonProperty]
+        public Dictionary<Direction, Guid> _exits;
+        public Guid Id;
+
+        [JsonConstructor]
         public Room(string description)
         {
             Description = description;
-            _exits = new Dictionary<Direction, Room>();
-            
-            
+            Id = Guid.NewGuid();
+            _exits = new Dictionary<Direction, Guid>();
+
+
+
+
         }
         //Constructor takes two arguments
-        public Room(string description, string longDescription)
+        public Room(string description, string longDescription) 
+        : this(description)
         {
-            Description = description;
+            
             LongDescription = longDescription;
-            _exits = new Dictionary<Direction, Room>();
+
         }
 
 
         //Set room exits
         public void SetExit(Direction direction, Room room)
         {
-            _exits.Add(direction, room);
+            _exits.Add(direction, room.Id);
         }
 
         public bool ContainsExit(Direction direction)
@@ -38,7 +49,7 @@ namespace cuul
             return _exits.ContainsKey(direction);
         }
 
-        public Room MoveToRoom(Direction direction)
+        public Guid GetExit(Direction direction)
         {
             return _exits[direction];
         }

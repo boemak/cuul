@@ -17,7 +17,8 @@ namespace cuul
     class Program
     {
         //Visited rooms stack. Makes it possible to go back
-        public Stack<Room> VisitedRooms = new Stack<Room>();
+        public Stack<Guid> VisitedRooms = new Stack<Guid>();
+        private List<Room> _rooms;
         //Our current room
         public Room CurrentRoom;
         //The command parser
@@ -52,21 +53,11 @@ namespace cuul
         //Create our rooms for the player to play in.
         private void CreateRooms()
         {
-            var start = new Room("The starting room", "Nothing special, it is a starting place allright");
-            var hall = new Room("The main hall", "It is quite the hall, I wish I had one like this.");
-            var library = new Room("The Library");
-            var smokeroom = new Room("The smoke room");
-            var classroom = new Room("The classroom", "It sure is a classroom");
-
-
-            start.SetExit(Direction.North, hall);
-            hall.SetExit(Direction.East, smokeroom);
-            smokeroom.SetExit(Direction.West, hall);
-            hall.SetExit(Direction.North, classroom);
-            hall.SetExit(Direction.West, library);
-            library.SetExit(Direction.East,hall);
+            var loader = new Loader();
+            _rooms = loader.LoadConfig();
+            var start = _rooms[0];
             //Push our starting room on the stack.
-            VisitedRooms.Push(start);
+            VisitedRooms.Push(start.Id);
             //Set the starting room as the CurrentRoom
             SetCurrentRoom(start);
 
@@ -87,15 +78,15 @@ namespace cuul
             //Our main loop
             while(true)
             {
-                Console.WriteLine("Input");
+                Console.Write(":==>");
                 //Read input from the keyboard
                 var input = Console.ReadLine();
                 //Parse the input into a valid command if possible.
                 var command = parser.Parse(input);
                 if(command.Item1)
                 {
-                    Console.WriteLine("valid input");
-                    Console.WriteLine("You wrote: {0} {1}", command.Item2.FirstWord, command.Item2.SecondWord);
+                    //Console.WriteLine("valid input");
+                    //Console.WriteLine("You wrote: {0} {1}", command.Item2.FirstWord, command.Item2.SecondWord);
                     ExcuteCommand(command.Item2);
                 }
                 else
@@ -157,9 +148,9 @@ namespace cuul
 
         private void GoBack()
         {
-            if (VisitedRooms.Count > 1)
+            if (VisitedRooms.Count != 0)
             {
-                SetCurrentRoom(VisitedRooms.Pop());
+                SetCurrentRoom(_rooms.Find(x => x.Id == VisitedRooms.Pop()));
             }
             else
             {
@@ -187,9 +178,9 @@ namespace cuul
                     {
                         //Seems so
                         //We push the currentroom on the stack.
-                        VisitedRooms.Push(CurrentRoom);
+                        VisitedRooms.Push(CurrentRoom.Id);
                         //We set our new room as the current room.
-                        SetCurrentRoom(CurrentRoom.MoveToRoom(dir));
+                        SetCurrentRoom(_rooms.Find(x => x.Id == CurrentRoom.GetExit(dir)));
                     }
                     else
                     {
