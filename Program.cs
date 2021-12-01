@@ -150,7 +150,8 @@ namespace cuul
         {
             if (VisitedRooms.Count != 0)
             {
-                SetCurrentRoom(_rooms.Find(x => x.Id == VisitedRooms.Pop()));
+                var id = VisitedRooms.Pop();
+                SetCurrentRoom(_rooms.Find(x => x.Id == id));
             }
             else
             {
