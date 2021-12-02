@@ -60,11 +60,16 @@ namespace cuul
             VisitedRooms.Push(start.Id);
             //Set the starting room as the CurrentRoom
             SetCurrentRoom(start);
-
+            Item key = new Item();
+            key.Name = "Skeleton Key";
+            key.Description = "A really crappy key";
+           
+ 
         }
 
         private void SetCurrentRoom(Room room)
         {
+            
             Console.WriteLine("You are in: {0}", room.Description);           
             CurrentRoom = room;
         }

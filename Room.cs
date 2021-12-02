@@ -13,6 +13,8 @@ namespace cuul
         public string Description { get; set; }
         public string LongDescription { get; set; }
 
+        public List<Item> Items = new List<Item>();
+
         [JsonProperty]
         public Dictionary<Direction, Guid> _exits;
         public Guid Id;
